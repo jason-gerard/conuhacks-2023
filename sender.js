@@ -2,8 +2,7 @@ require("dotenv").config();
 const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction} = require("@hashgraph/sdk");
 const fs = require('fs');
 
-async function main() {
-
+async function send(filePath) {
     //Grab your Hedera testnet account ID and private key from your .env file
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
@@ -23,7 +22,6 @@ async function main() {
     const newAccountPrivateKey = PrivateKey.generateED25519();
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
-    const filePath = process.argv[2];
     const contents = fs.readFileSync(filePath, 'utf8');
     
     //Create the transaction
@@ -50,4 +48,6 @@ async function main() {
     console.log("The new file ID is: " + newFileId);
 }
 
-main();
+module.exports = {
+    send,
+}

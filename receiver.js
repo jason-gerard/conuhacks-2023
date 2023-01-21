@@ -3,7 +3,7 @@ const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar,
 } = require("@hashgraph/sdk");
 require("dotenv").config();
 
-async function main() {
+async function receive(fileIds) {
     //Grab your Hedera testnet account ID and private key from your .env file
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
@@ -25,7 +25,7 @@ async function main() {
 
     //Create the query
     const query = new FileContentsQuery()
-        .setFileId(process.argv[2]);
+        .setFileId(fileIds[0]);
 
     //Sign with client operator private key and submit the query to a Hedera network
     const contents = await query.execute(client);
@@ -33,4 +33,6 @@ async function main() {
     console.log(contents.toString());
 }
 
-main();
+module.exports = {
+    receive,
+}

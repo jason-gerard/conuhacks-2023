@@ -1,18 +1,11 @@
 # conuhacks-2023
 
-## Getting started
-
-- `cp .env.sample .env`
-- Fill in `.env` file with credentials from portal
-- `npm install`
-- `node index.js` to run sample code
-
 ## Sending a file
 
-- `node sender.js <file-path>`
-- `node sender.js test.json`
+- `node index.js send <file-path>`
+- `node index.js send test.json`
 
 ## Receiving a file
 
-- `node receiver.js <file-id>`
-- EX: `node receiver.js 0.0.49364027`
+- `node index.js receive <file-id>`
+- `node index.js receive 0.0.49364027`
