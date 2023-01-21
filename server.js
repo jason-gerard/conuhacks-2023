@@ -19,6 +19,10 @@ app.get('/', async (req, res) => {
     res.render("pages/index");
 });
 
+app.post('/upload/file/:filename', async (req, res) => {
+    res.render("pages/index");
+});
+
 const server = http.createServer(app);
 
 server.listen(8081, () => {
