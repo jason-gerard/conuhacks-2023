@@ -9,7 +9,8 @@
 
 ## Sending a file
 
-- `node sender.js`
+- `node sender.js <file-path>`
+- `node sender.js test.json`
 
 ## Receiving a file
 

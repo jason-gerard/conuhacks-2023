@@ -1,5 +1,6 @@
-const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction} = require("@hashgraph/sdk");
 require("dotenv").config();
+const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction} = require("@hashgraph/sdk");
+const fs = require('fs');
 
 async function main() {
 
@@ -22,10 +23,13 @@ async function main() {
     const newAccountPrivateKey = PrivateKey.generateED25519();
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
+    const filePath = process.argv[2];
+    const contents = fs.readFileSync(filePath, 'utf8');
+    
     //Create the transaction
     const transaction = await new FileCreateTransaction()
-        .setKeys([newAccountPublicKey]) //A different key then the client operator key
-        .setContents("Try something else")
+        .setKeys([newAccountPublicKey])
+        .setContents(contents)
         .setMaxTransactionFee(new Hbar(2))
         .freezeWith(client);
 
