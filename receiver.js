@@ -4,7 +4,6 @@ const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar,
 require("dotenv").config();
 
 async function main() {
-
     //Grab your Hedera testnet account ID and private key from your .env file
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
@@ -26,7 +25,7 @@ async function main() {
 
     //Create the query
     const query = new FileContentsQuery()
-        .setFileId("0.0.49364027");
+        .setFileId(process.argv[2]);
 
     //Sign with client operator private key and submit the query to a Hedera network
     const contents = await query.execute(client);
