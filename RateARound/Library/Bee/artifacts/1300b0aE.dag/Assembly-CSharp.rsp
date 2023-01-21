@@ -323,6 +323,8 @@
 -r:"/home/jason/Unity/Hub/Editor/2021.3.16f1/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XmlDocument.dll"
 -r:"/home/jason/Unity/Hub/Editor/2021.3.16f1/Editor/Data/NetStandard/compat/2.1.0/shims/netstandard/System.Xml.XmlSerializer.dll"
 -r:"/home/jason/Unity/Hub/Editor/2021.3.16f1/Editor/Data/NetStandard/ref/2.1.0/netstandard.dll"
+-r:"/home/jason/Unity/Hub/Editor/2021.3.16f1/Editor/Data/PlaybackEngines/AndroidPlayer/Unity.Android.Gradle.dll"
+-r:"/home/jason/Unity/Hub/Editor/2021.3.16f1/Editor/Data/PlaybackEngines/AndroidPlayer/Unity.Android.Types.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.EditorCoroutines.Editor.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.InputSystem.ref.dll"
 -r:"Library/Bee/artifacts/1300b0aE.dag/Unity.InternalAPIEditorBridge.007.ref.dll"
