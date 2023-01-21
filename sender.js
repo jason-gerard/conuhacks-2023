@@ -5,9 +5,6 @@ const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar,
 const fs = require('fs');
 
 async function send(fileName, contents) {
-    
-    console.log(fileName);
-    console.log(contents);
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
 
