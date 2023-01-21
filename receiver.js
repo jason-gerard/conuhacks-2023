@@ -24,22 +24,25 @@ async function receive(fileId) {
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
     //Create the query
-    let query = new FileContentsQuery()
+    const query = new FileContentsQuery()
         .setFileId(fileId);
 
     //Sign with client operator private key and submit the query to a Hedera network
-    const contents = await query.execute(client);
+    const contents = (await query.execute(client)).toString();
+    
+    const splitIdx = contents.indexOf("\n\n");
+    const fileName = contents.substring(0, splitIdx);
+    // Increment the index by 2 to skip both \n chars
+    const fileContent = contents.substring(splitIdx + 2);
 
-    console.log(contents.toString());
+    console.log("Title::\n" + fileName);
+    console.log("contents::\n" + fileContent);
 
-    //Create the query
-    query = new FileInfoQuery()
+    const fileInfoQuery = new FileInfoQuery()
         .setFileId(fileId);
 
-    //Sign the query with the client operator private key and submit to a Hedera network
-    const getInfo = await query.execute(client);
-
-    console.log("File info response: " +getInfo.size);
+    const getInfo = await fileInfoQuery.execute(client);
+    console.log("File info response: " + getInfo.size);
 }
 
 module.exports = {

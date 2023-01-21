@@ -9,7 +9,6 @@ async function main() {
         await receive(fileId)
     } else if (process.argv[2] === "send") {
         const filePath = process.argv[3]
-        console.log(filePath);
         await send(filePath)
     } else {
         console.log("Please enter a valid input for the command line driver...");
