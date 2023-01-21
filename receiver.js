@@ -31,7 +31,7 @@ async function receive(fileId) {
     const contents = (await query.execute(client)).toString();
     
     const splitIdx = contents.indexOf("\n\n");
-    const fileName = contents.substring(0, splitIdx);
+    const fileName = "download-" + contents.substring(0, splitIdx);
     // Increment the index by 2 to skip both \n chars
     const fileContent = contents.substring(splitIdx + 2);
 
@@ -43,6 +43,8 @@ async function receive(fileId) {
 
     const getInfo = await fileInfoQuery.execute(client);
     console.log("File info response: " + getInfo.size);
+    
+    return [fileName, fileContent];
 }
 
 module.exports = {

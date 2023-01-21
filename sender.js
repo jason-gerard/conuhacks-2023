@@ -21,8 +21,7 @@ async function send(fileName, contents) {
     const newAccountPrivateKey = PrivateKey.generateED25519();
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
-    // 5000 kilobits / 8 to get number of kilobytes
-    const chunkSize = Math.floor(5000 / 8);
+    const chunkSize = 1000 * 80;
     let startPointer = 0;
     const endPointer = Buffer.byteLength(contents, 'utf8');
     const chunks = [];
@@ -44,14 +43,16 @@ async function send(fileName, contents) {
     const fileNameSignTx = await fileNameTransaction.sign(newAccountPrivateKey);
     const fileNameSubmitTx = await fileNameSignTx.execute(client);
     const fileNameTxnReceipt = await fileNameSubmitTx.getReceipt(client);
-    
-    console.log(fileNameTxnReceipt);
-    console.log("The new file ID is: " + fileNameTxnReceipt.fileId);
 
-    for (const chunk of chunks) {
+    console.log("The file ID is: " + fileNameTxnReceipt.fileId);
+    console.log(fileNameTxnReceipt);
+
+    console.log(chunks.length);
+    for (let i = 0; i < chunks.length; i++) {
+        console.log(i);
         const transaction = await new FileAppendTransaction()
             .setFileId(fileNameTxnReceipt.fileId)
-            .setContents(chunk)
+            .setContents(chunks[i])
             .setMaxTransactionFee(new Hbar(2))
             .freezeWith(client);
 

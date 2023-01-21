@@ -7,7 +7,8 @@ const fs = require("fs");
 async function main() {
     if (process.argv[2] === "receive") {
         const fileId = process.argv[3]
-        await receive(fileId)
+        const [fileName, fileContent] = await receive(fileId);
+        fs.writeFileSync(fileName, fileContent);
     } else if (process.argv[2] === "send") {
         const fileName = process.argv[3];
         const contents = fs.readFileSync(fileName, 'utf8');
