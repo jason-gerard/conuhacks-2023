@@ -5,70 +5,59 @@ const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar,
 const fs = require('fs');
 
 async function send(filePath) {
-    //Grab your Hedera testnet account ID and private key from your .env file
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
 
-    // If we weren't able to grab it, we should throw a new error
     if (!myAccountId || !myPrivateKey) {
         throw new Error("Environment variables MY_ACCOUNT_ID and MY_PRIVATE_KEY must be present");
     }
 
-    // Create our connection to the Hedera network
-    // The Hedera JS SDK makes this really easy!
     const client = Client.forTestnet();
-
     client.setOperator(myAccountId, myPrivateKey);
 
-    //Create new keys
     const newAccountPrivateKey = PrivateKey.generateED25519();
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
     const contents = fs.readFileSync(filePath, 'utf8');
+    // 5000 kilobits / 8 to get number of kilobytes
+    const chunkSize = Math.floor(5000 / 8);
+    let startPointer = 0;
+    const endPointer = Buffer.byteLength(contents, 'utf8');
+    const chunks = [];
+
+    while (startPointer < endPointer){
+        let newStartPointer = startPointer + chunkSize;
+        chunks.push(contents.slice(startPointer, newStartPointer));
+        startPointer = newStartPointer;
+    }
     
-    //Create the transaction
-    let transaction = await new FileCreateTransaction()
+    const fileNameHeader = `${filePath}\n\n`;
+    // Create the transaction file with the file name as the first transaction
+    const fileNameTransaction = await new FileCreateTransaction()
         .setKeys([newAccountPublicKey])
-        .setContents(contents)
+        .setContents(fileNameHeader)
         .setMaxTransactionFee(new Hbar(2))
         .freezeWith(client);
 
-    //Sign with the file private key
-    let signTx = await transaction.sign(newAccountPrivateKey);
+    const fileNameSignTx = await fileNameTransaction.sign(newAccountPrivateKey);
+    const fileNameSubmitTx = await fileNameSignTx.execute(client);
+    const fileNameTxnReceipt = await fileNameSubmitTx.getReceipt(client);
+    
+    console.log(fileNameTxnReceipt);
+    console.log("The new file ID is: " + fileNameTxnReceipt.fileId);
 
-    //Sign with the client operator private key and submit to a Hedera network
-    let submitTx = await signTx.execute(client);
+    for (const chunk of chunks) {
+        const transaction = await new FileAppendTransaction()
+            .setFileId(fileNameTxnReceipt.fileId)
+            .setContents(chunk)
+            .setMaxTransactionFee(new Hbar(2))
+            .freezeWith(client);
 
-    //Request the receipt
-    let receipt = await submitTx.getReceipt(client);
-
-    console.log(receipt);
-
-    //Get the file ID
-    let newFileId = receipt.fileId;
-
-    console.log("The new file ID is: " + newFileId);
-
-    //Create the transaction
-    transaction = await new FileAppendTransaction()
-        .setFileId(receipt.fileId)
-        .setContents(contents)
-        .setMaxTransactionFee(new Hbar(2))
-        .freezeWith(client);
-
-    //Sign with the file private key
-    signTx = await transaction.sign(newAccountPrivateKey);
-
-    //Sign with the client operator key and submit to a Hedera network
-    txResponse = await signTx.execute(client);
-
-    //Request the receipt
-    receipt = await txResponse.getReceipt(client);
-
-    //Get the transaction consensus status
-    transactionStatus = receipt.status;
-
-    console.log("The transaction consensus status is " +transactionStatus);
+        const signTx = await transaction.sign(newAccountPrivateKey);
+        const txResponse = await signTx.execute(client);
+        const receipt = await txResponse.getReceipt(client);
+        console.log(receipt); 
+    }
 }
 
 module.exports = {
