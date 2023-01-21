@@ -4,7 +4,7 @@ const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar,
 } = require("@hashgraph/sdk");
 const fs = require('fs');
 
-async function send(filePath) {
+async function send(fileName, contents) {
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
 
@@ -18,7 +18,6 @@ async function send(filePath) {
     const newAccountPrivateKey = PrivateKey.generateED25519();
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
-    const contents = fs.readFileSync(filePath, 'utf8');
     // 5000 kilobits / 8 to get number of kilobytes
     const chunkSize = Math.floor(5000 / 8);
     let startPointer = 0;
@@ -31,7 +30,7 @@ async function send(filePath) {
         startPointer = newStartPointer;
     }
     
-    const fileNameHeader = `${filePath}\n\n`;
+    const fileNameHeader = `${fileName}\n\n`;
     // Create the transaction file with the file name as the first transaction
     const fileNameTransaction = await new FileCreateTransaction()
         .setKeys([newAccountPublicKey])
