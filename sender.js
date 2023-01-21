@@ -1,5 +1,7 @@
 require("dotenv").config();
-const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction} = require("@hashgraph/sdk");
+const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction,
+    FileAppendTransaction
+} = require("@hashgraph/sdk");
 const fs = require('fs');
 
 async function send(filePath) {
@@ -25,27 +27,48 @@ async function send(filePath) {
     const contents = fs.readFileSync(filePath, 'utf8');
     
     //Create the transaction
-    const transaction = await new FileCreateTransaction()
+    let transaction = await new FileCreateTransaction()
         .setKeys([newAccountPublicKey])
         .setContents(contents)
         .setMaxTransactionFee(new Hbar(2))
         .freezeWith(client);
 
     //Sign with the file private key
-    const signTx = await transaction.sign(newAccountPrivateKey);
+    let signTx = await transaction.sign(newAccountPrivateKey);
 
     //Sign with the client operator private key and submit to a Hedera network
-    const submitTx = await signTx.execute(client);
+    let submitTx = await signTx.execute(client);
 
     //Request the receipt
-    const receipt = await submitTx.getReceipt(client);
-    
+    let receipt = await submitTx.getReceipt(client);
+
     console.log(receipt);
 
     //Get the file ID
-    const newFileId = receipt.fileId;
+    let newFileId = receipt.fileId;
 
     console.log("The new file ID is: " + newFileId);
+
+    //Create the transaction
+    transaction = await new FileAppendTransaction()
+        .setFileId(receipt.fileId)
+        .setContents(contents)
+        .setMaxTransactionFee(new Hbar(2))
+        .freezeWith(client);
+
+    //Sign with the file private key
+    signTx = await transaction.sign(newAccountPrivateKey);
+
+    //Sign with the client operator key and submit to a Hedera network
+    txResponse = await signTx.execute(client);
+
+    //Request the receipt
+    receipt = await txResponse.getReceipt(client);
+
+    //Get the transaction consensus status
+    transactionStatus = receipt.status;
+
+    console.log("The transaction consensus status is " +transactionStatus);
 }
 
 module.exports = {

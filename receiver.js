@@ -1,5 +1,5 @@
 const { Client, PrivateKey, AccountCreateTransaction, AccountBalanceQuery, Hbar, FileCreateTransaction,
-    FileContentsQuery
+    FileContentsQuery, FileInfoQuery
 } = require("@hashgraph/sdk");
 require("dotenv").config();
 
@@ -24,13 +24,22 @@ async function receive(fileId) {
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
     //Create the query
-    const query = new FileContentsQuery()
+    let query = new FileContentsQuery()
         .setFileId(fileId);
 
     //Sign with client operator private key and submit the query to a Hedera network
     const contents = await query.execute(client);
 
     console.log(contents.toString());
+
+    //Create the query
+    query = new FileInfoQuery()
+        .setFileId(fileId);
+
+    //Sign the query with the client operator private key and submit to a Hedera network
+    const getInfo = await query.execute(client);
+
+    console.log("File info response: " +getInfo.size);
 }
 
 module.exports = {
