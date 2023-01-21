@@ -1,0 +1,24 @@
+{
+  "name": "conuhacks-2023",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jason-gerard/conuhacks-2023.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jason-gerard/conuhacks-2023/issues"
+  },
+  "homepage": "https://github.com/jason-gerard/conuhacks-2023#readme",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.19.2",
+    "dotenv": "^16.0.3"
+  }
+}
