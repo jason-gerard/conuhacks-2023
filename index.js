@@ -5,8 +5,8 @@ const {send} = require("./sender");
 
 async function main() {
     if (process.argv[2] === "receive") {
-        const fileIds = [process.argv[3]]
-        await receive(fileIds)
+        const fileId = process.argv[3]
+        await receive(fileId)
     } else if (process.argv[2] === "send") {
         const filePath = process.argv[3]
         console.log(filePath);
