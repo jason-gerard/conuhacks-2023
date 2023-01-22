@@ -31,7 +31,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/downloadPage', async (req, res) => {
-    res.render("pages/download", {data: ""});
+    res.render("pages/download", {data: "", filePath: ""});
 });
 
 app.post('/uploadfile',(req, res) => {
@@ -62,8 +62,16 @@ app.post('/uploadfile',(req, res) => {
 
 app.post('/downloadfile',async (req, res) => {
 
-    let data = await receive(req.body.fname);
-    res.render("pages/download", {data});
+    let [filePath, data] = await receive(req.body.fname);
+
+    fs.writeFile("./public/" + filePath, data, function (err) {
+        if (err) throw err;
+        console.log('Saved!');
+    });
+
+    console.log(filePath)
+
+    res.render("pages/download", {data, filePath});
 
 });
 server.listen(8081, () => {
