@@ -1,5 +1,7 @@
 # FileChain - conuhacks-2023
 
+This project uses a custom application layer protocol called `DRAFT protocol`. This stands for decentralized robust adaptive file transfer protocol.
+
 ## Sending a file
 
 - `node index.js send <file-path>`
