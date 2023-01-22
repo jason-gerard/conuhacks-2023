@@ -7,6 +7,7 @@ const formidable = require("formidable");
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const { send } = require('./sender');
+const {receive} = require("./receiver");
 const app = express();
 const server = http.createServer(app);
 
@@ -27,6 +28,10 @@ app.set('view engine', 'ejs'); // configure template engine
 
 app.get('/', async (req, res) => {
     res.render("pages/index", {fileId: ""});
+});
+
+app.get('/downloadPage', async (req, res) => {
+    res.render("pages/download", {data: ""});
 });
 
 app.post('/uploadfile',(req, res) => {
@@ -55,6 +60,12 @@ app.post('/uploadfile',(req, res) => {
 
 });
 
+app.post('/downloadfile',async (req, res) => {
+
+    let data = await receive(req.body.fname);
+    res.render("pages/download", {data});
+
+});
 server.listen(8081, () => {
     console.log(`Server started on port ${server.address().port}`);
 });
