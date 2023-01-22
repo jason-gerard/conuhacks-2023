@@ -9,12 +9,6 @@ async function send(fileName, contents) {
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
     const senderPrivateKey = new Uint8Array([121, 134, 128, 152, 243, 145, 121, 6, 111, 119,  69,  69,  52,  34,  87,  62, 62,  32,  96, 121,  57,  43, 239,  77, 124,  68, 116,  89,  97,  76, 185, 154]);
-    const { privateKeySign, publicKeySign } = crypto.generateKeyPairSync('rsa', {
-        modulusLength: 2048,
-    });
-    crypto.createPrivateKey()
-    console.log(privateKeySign)
-    console.log(publicKeySign)
 
     if (!myAccountId || !myPrivateKey) {
         throw new Error("Environment variables MY_ACCOUNT_ID and MY_PRIVATE_KEY must be present");
@@ -28,10 +22,6 @@ async function send(fileName, contents) {
 
     const chunkSize = 1024;
     let startPointer = 0;
-
-    // const sign = crypto.sign("SHA256", contents , crypto.createPrivateKey(Buffer.from(senderPrivateKey)));
-    // console.log(crypto.verify("SHA256",contents, crypto.createPublicKey(Buffer.from(newAccountPublicKey.toBytes())), sign))
-
 
     const endPointer = Buffer.byteLength(contents, 'utf8');
     const chunks = [];
@@ -91,7 +81,6 @@ async function send(fileName, contents) {
     
     console.log(`Manifest file id: ${receipt.fileId.toString()}`);
 }
-send('test.json', "Hello world")
 
 module.exports = {
     send,
