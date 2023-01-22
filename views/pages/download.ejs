@@ -13,7 +13,8 @@
   <div class="row">
 
       <form name="form1" method="POST" action="/downloadfile">
-          <b>file Id:</b> <input type="text" name="fname" >
+        <div class="download-div"><b class="upload-file">Download File</b> </div>
+          <b>File Id:</b> <input type="text" name="fname" >
           <input class="btn btn-primary" type="submit" value="Save" >
     </form>
   </div>
@@ -22,3 +23,65 @@
 
 </body>
 </html>
+
+<style>
+body {
+  background-color: white(6, 26, 27);
+  height: 100vh;
+  display: flex;
+}
+* {
+    box-sizing: border-box;
+}
+.container {
+    max-width: 500px;
+    margin: auto;
+    border: 2px black solid;
+    border-radius: 10px;
+    text-align: center;
+}
+.container h1 {
+    text-align: center;
+    margin: auto;
+    color: white;
+}
+form .input-group {
+    margin-bottom: 15px;
+}
+form label {
+    display: block;
+}
+form input {
+    padding: 8px 10px;
+    width: 80%;
+    border: 1px solid #ccc;
+}
+.file-id-container{
+    font-size: 20px;
+}
+.submit-btn {
+    width: 100%;
+    border: none;
+    background: rgb(37, 83, 3);
+    font-size: 18px;
+    color: white;
+    border-radius: 3px;
+    padding: 20px;
+    text-align: center;
+}
+.btn-primary{
+    margin-top: 10px;
+}
+form {
+    background-color: white;
+    padding: 10px 30px 10px 30px;
+    border-radius: 10px;
+}
+.download-div{
+    margin-bottom: 10px;
+}
+.upload-file{
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+</style>
