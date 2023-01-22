@@ -31,7 +31,7 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/downloadPage', async (req, res) => {
-    res.render("pages/download", {data: "", filePath: ""});
+    res.render("pages/download", {data: "", filePath: "", isFileDownloaded: ""});
 });
 
 app.post('/uploadfile',(req, res) => {
@@ -71,7 +71,7 @@ app.post('/downloadfile',async (req, res) => {
 
     console.log(filePath)
 
-    res.render("pages/download", {data, filePath});
+    res.render("pages/download", {data, filePath, isFileDownloaded: "File is done Downloading"});
 
 });
 server.listen(8081, () => {

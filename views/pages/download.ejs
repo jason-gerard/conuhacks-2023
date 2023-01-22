@@ -14,12 +14,15 @@
 
       <form name="form1" method="POST" action="/downloadfile">
         <div class="download-div"><b class="upload-file">Download File</b> </div>
-          <b>File Id:</b> <input type="text" name="fname" >
+          <div><b>File Id: </b><input class="f-name" type="text" name="fname" >
           <input class="btn btn-primary" type="submit" value="Save" >
+          </div>
     </form>
   </div>
   <div class="file-id-container">
-      <a href="<%= filePath %>" download>Download file</a></div>
+        <p> <%= isFileDownloaded %> </p>
+      <a href="<%= filePath %>" download>Download file</a>
+    </div>
 </div>
 
 </body>
@@ -85,5 +88,8 @@ form {
 .upload-file{
     font-size: 30px;
     margin-bottom: 10px;
+}
+.f-name{
+    width: 300px;
 }
 </style>
