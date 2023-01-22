@@ -13,8 +13,8 @@
   <div class="row">
 
     <form action="/uploadfile" method="post" enctype="multipart/form-data">
-           <b>Upload File:</b> <input type="file" name="file-input" id="file-input" multiple/>
-           <input class="btn btn-primary" type="submit" style="border-radius: 4px;" name="file" value="Upload">
+           <div class="upload-div"><b>Upload File</b> </div><input type="file" name="file-input" id="file-input" multiple/>
+           <input class="btn-primary" type="submit" style="border-radius: 4px;" name="file" value="Upload">
     </form>
   </div>
   <div class="file-id-container">File ID: <%= fileId %></div>
@@ -23,6 +23,10 @@
 
 </body>
 <style type="text/css">
+
+.upload-div{
+    margin-bottom: 10px;
+}
 body {
     background-color: white(6, 26, 27);
     height: 100vh;
@@ -34,15 +38,22 @@ body {
 .container {
     max-width: 500px;
     margin: auto;
+    border: 2px black solid;
+    border-radius: 10px;
+    text-align: center;
 }
 .container h1 {
     text-align: center;
     margin: auto;
     color: white;
 }
+b{
+    font-size: 30px;
+    margin-bottom: 10px;
+}
 form {
     background-color: white;
-    padding: 30px;
+    padding: 10px 30px 10px 30px;
     border-radius: 10px;
 }
 form .input-group {
@@ -50,7 +61,6 @@ form .input-group {
 }
 form label {
     display: block;
-    margin-bottom: 10px;
 }
 form input {
     padding: 12px 20px;
@@ -58,6 +68,7 @@ form input {
     border: 1px solid #ccc;
 }
 .file-id-container{
+    font-size: 20px;
 }
 .submit-btn {
     width: 100%;
@@ -68,6 +79,9 @@ form input {
     border-radius: 3px;
     padding: 20px;
     text-align: center;
+}
+.btn-primary{
+    margin-top: 10px;
 }
 </style>
 </html>
