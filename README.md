@@ -1,4 +1,4 @@
-# conuhacks-2023
+# FileChain - conuhacks-2023
 
 ## Sending a file
 
