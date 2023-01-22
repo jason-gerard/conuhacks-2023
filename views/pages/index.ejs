@@ -9,20 +9,60 @@
 </head>
 <body>
 
-<div class="container col-sm-12" id="choose-files" oncopy="return false" oncut="return false" onpaste="return false">
+<div class="container" id="choose-files" oncopy="return false" oncut="return false" onpaste="return false">
   <div class="row">
 
     <form action="/uploadfile" method="post" enctype="multipart/form-data">
-           <b>Cashback:</b> <input type="file" name="cashbackfiles" id="cashbackfiles"
-           multiple/>
-           <input class="btn btn-primary" type="submit" style="border-radius: 4px;" name="cashbackfiles" value="Upload">
-       </form>
+           <b>file:</b> <input type="file" name="cashbackfiles" id="cashbackfiles" multiple/>
+           <input class="btn btn-primary" type="submit" style="border-radius: 4px;" name="file" value="Upload">
+    </form>
   </div>
 </div>
 
 </body>
 <style type="text/css">
-
-
+body {
+    background-color: rgb(6, 26, 27);
+    height: 100vh;
+    display: flex;
+}
+* {
+    box-sizing: border-box;
+}
+.container {
+    max-width: 500px;
+    margin: auto;
+}
+.container h1 {
+    text-align: center;
+    margin: auto;
+    color: white;
+}
+form {
+    background-color: white;
+    padding: 30px;
+}
+form .input-group {
+    margin-bottom: 15px;
+}
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+form input {
+    padding: 12px 20px;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+.submit-btn {
+    width: 100%;
+    border: none;
+    background: rgb(37, 83, 3);
+    font-size: 18px;
+    color: white;
+    border-radius: 3px;
+    padding: 20px;
+    text-align: center;
+}
 </style>
 </html>

@@ -37,13 +37,13 @@ app.post('/uploadfile',(req, res) => {
     // specify that we want to allow the user to upload multiple files in a single request
     form.multiples = true;
 
-    form.on('file', function(field, file) {
+    form.on('file', async function(field, file) {
      const fileName = file.originalFilename.toString();
      const contents = fs.readFileSync(file.filepath,'utf8');
 
      console.log(contents);
 
-     send(fileName, contents);
+     await send(fileName, contents);
     });
 
     form.parse(req);
