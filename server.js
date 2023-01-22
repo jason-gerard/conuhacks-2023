@@ -29,40 +29,29 @@ app.get('/', async (req, res) => {
     res.render("pages/index");
 });
 
-app.post('/uploadfile',upload_file);
+app.post('/uploadfile',(req, res) => {
+
+    // create an incoming form object
+    var form = new formidable.IncomingForm();
+
+    // specify that we want to allow the user to upload multiple files in a single request
+    form.multiples = true;
+
+    form.on('file', function(field, file) {
+     const fileName = file.originalFilename.toString();
+     const contents = fs.readFileSync(file.filepath,'utf8');
+
+     console.log(contents);
+
+     send(fileName, contents);
+    });
+
+    form.parse(req);
+    // log any errors that occur
+    res.redirect("/");
+
+});
 
 server.listen(8081, () => {
     console.log(`Server started on port ${server.address().port}`);
 });
-
-function upload_file(req, res, next){
-    if(req.method == "POST") {
-
-       // create an incoming form object
-       var form = new formidable.IncomingForm();
-
-       // specify that we want to allow the user to upload multiple files in a single request
-       form.multiples = true;
-
-       form.on('file', function(field, file) {
-        var fileName = file.originalFilename.toString();
-        var contents = fs.readFileSync(file.filepath,'utf8');
-
-        send(fileName, contents);
-       });
-
-       // log any errors that occur
-       form.on('error', function(err) {
-           console.log('An error has occured: \n' + err);
-       });
-
-       // once all the files have been uploaded, send a response to the client
-       form.on('end', function() {
-            //res.redirect('/');
-           //res.redirect('/');
-       });
-
-       // parse the incoming request containing the form data
-       form.parse(req);
-     }
- }
