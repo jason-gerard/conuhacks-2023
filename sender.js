@@ -80,6 +80,7 @@ async function send(fileName, contents) {
     const receipt = await submitTx.getReceipt(client);
     
     console.log(`Manifest file id: ${receipt.fileId.toString()}`);
+    return receipt.fileId.toString();
 }
 
 module.exports = {
