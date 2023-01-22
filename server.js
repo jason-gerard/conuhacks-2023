@@ -26,7 +26,7 @@ app.set('views', __dirname + '/views'); // set express to look in this folder to
 app.set('view engine', 'ejs'); // configure template engine
 
 app.get('/', async (req, res) => {
-    res.render("pages/index");
+    res.render("pages/index", {fileId: ""});
 });
 
 app.post('/uploadfile',(req, res) => {
@@ -37,18 +37,21 @@ app.post('/uploadfile',(req, res) => {
     // specify that we want to allow the user to upload multiple files in a single request
     form.multiples = true;
 
+    let fileId;
+
     form.on('file', async function(field, file) {
      const fileName = file.originalFilename.toString();
      const contents = fs.readFileSync(file.filepath,'utf8');
 
      console.log(contents);
 
-     await send(fileName, contents);
+     fileId = await send(fileName, contents);
+     console.log({ fileId });
+     res.render("pages/index", { fileId });
     });
 
     form.parse(req);
     // log any errors that occur
-    res.redirect("/");
 
 });
 

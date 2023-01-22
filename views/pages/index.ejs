@@ -13,16 +13,17 @@
   <div class="row">
 
     <form action="/uploadfile" method="post" enctype="multipart/form-data">
-           <b>file:</b> <input type="file" name="cashbackfiles" id="cashbackfiles" multiple/>
+           <b>Upload File:</b> <input type="file" name="file-input" id="file-input" multiple/>
            <input class="btn btn-primary" type="submit" style="border-radius: 4px;" name="file" value="Upload">
     </form>
   </div>
+  <div class="file-id-container">File ID: <%= fileId %></div>
 </div>
 
 </body>
 <style type="text/css">
 body {
-    background-color: rgb(6, 26, 27);
+    background-color: white(6, 26, 27);
     height: 100vh;
     display: flex;
 }
@@ -41,6 +42,7 @@ body {
 form {
     background-color: white;
     padding: 30px;
+    border-radius: 10px;
 }
 form .input-group {
     margin-bottom: 15px;
@@ -53,6 +55,8 @@ form input {
     padding: 12px 20px;
     width: 100%;
     border: 1px solid #ccc;
+}
+.file-id-container{
 }
 .submit-btn {
     width: 100%;
