@@ -22,7 +22,6 @@ async function send(fileName, contents) {
 
     const chunkSize = 1024;
     let startPointer = 0;
-
     const endPointer = Buffer.byteLength(contents, 'utf8');
     const chunks = [];
 
@@ -38,7 +37,7 @@ async function send(fileName, contents) {
     // Create a new file for each chunk and store a list of the file ids in order
     let fileIds = [];
     const batchSize = 50;
-    for (let i = 0; i < chunks.length / batchSize; i++) {
+    for (let i = 0; i < Math.ceil(chunks.length / batchSize); i++) {
         const batchFileIds = await Promise.all(
             chunks
                 .slice(i * batchSize, (i+1) * batchSize)
@@ -67,17 +66,31 @@ async function send(fileName, contents) {
     
     // Create manifest file containing the file name and the in order list of file ids
     const fileNameHeader = `${fileName}\n\n`;
-    const manifestFile = fileNameHeader + fileIds.join("\n");
-    console.log(manifestFile);
     const manifestFileTransaction = await new FileCreateTransaction()
         .setKeys([newAccountPublicKey])
-        .setContents(manifestFile)
+        .setContents(fileNameHeader)
         .setMaxTransactionFee(new Hbar(2))
         .freezeWith(client);
 
     const signTx = await manifestFileTransaction.sign(newAccountPrivateKey);
     const submitTx = await signTx.execute(client);
     const receipt = await submitTx.getReceipt(client);
+
+    const fileIdBatchSize = 1000;
+    for (let i = 0; i < Math.ceil(fileIds.length / fileIdBatchSize); i++) {
+        const manifestIdChunk = fileIds
+            .slice(i * fileIdBatchSize, (i+1) * fileIdBatchSize)
+            .join("\n");
+        
+        const transaction = await new FileAppendTransaction()
+            .setFileId(receipt.fileId)
+            .setContents(manifestIdChunk)
+            .setMaxTransactionFee(new Hbar(2))
+            .freezeWith(client);
+
+        const signTx = await transaction.sign(newAccountPrivateKey);
+        await signTx.execute(client);
+    }
     
     console.log(`Manifest file id: ${receipt.fileId.toString()}`);
     return receipt.fileId.toString();
