@@ -6,6 +6,7 @@ require("dotenv").config();
 async function receive(fileId) {
     const myAccountId = process.env.MY_ACCOUNT_ID;
     const myPrivateKey = process.env.MY_PRIVATE_KEY;
+    const receiverPrivateKey = new Uint8Array([7,   7, 214, 120,  40, 128, 200,  13, 68, 197,  61, 203, 121,  50, 247, 221, 183, 155, 237,  87,  76, 210, 206, 117, 145,  83, 203, 251, 246, 223, 244, 191])
 
     if (!myAccountId || !myPrivateKey) {
         throw new Error("Environment variables MY_ACCOUNT_ID and MY_PRIVATE_KEY must be present");
@@ -13,8 +14,9 @@ async function receive(fileId) {
 
     const client = Client.forTestnet();
     client.setOperator(myAccountId, myPrivateKey);
-    
-    const newAccountPrivateKey = PrivateKey.generateED25519();
+
+    //Create new keys
+    const newAccountPrivateKey = PrivateKey.fromBytes(receiverPrivateKey);
     const newAccountPublicKey = newAccountPrivateKey.publicKey;
 
     const query = new FileContentsQuery()
